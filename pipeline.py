@@ -52,7 +52,12 @@ def parse_arguments():
 
 def validate_input(filepath):
     """Check whether the input path exists and is a file."""
-    pass  # TODO: implement
+    if not Path(filepath).is_file():  # TODO: implement
+        logger.error(f"Input file does not exist: {filepath}")
+        return False
+    else:
+        logger.info(f'Input file exists: {filepath}')
+        return True 
 
 
 def main():

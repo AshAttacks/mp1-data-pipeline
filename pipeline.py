@@ -27,6 +27,8 @@ def setup_logging(verbose=False):
 def parse_arguments():
     """Parse command-line arguments.""" # TODO: implement
 
+    parser = argparse.ArgumentParser(description='Data Processing Pipeline')  # Parser
+
     parser.add_argument('--input',
                         '-i',
                         required=True,
@@ -47,6 +49,7 @@ def parse_arguments():
                         action='store_true',
                         help='Enable verbose logging',
                         default='False')
+    return parser.parse_args()
 
 
 def validate_input(filepath):
@@ -65,19 +68,19 @@ def main():
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser() # Parser
-    args = parser.parse_args() # Arguments to use
 
-    args.input = 'sales.csv'
-    args.verbose = True
+    args = parse_arguments() # Arguments to use
 
     if args.verbose: # Set DEBUG
         logger.setLevel(logging.DEBUG)
 
-    logger.debug(f"Arguments parsed: file location = '{args.input}'")
-
     if not validate_input(args.input):
+        logger.error(f"Input file not found: {args.input}")
         sys.exit(1)
+    else:
+        logger.info(f"Input file location = '{args.input}'")
+        logger.debug(f"Arguments parsed: input={args.input}, output={args.output}, format={args.format}")
+
 
     '''
     Parse the command-line arguments.
@@ -86,7 +89,5 @@ if __name__ == "__main__":
     Validate the input file.
     Exit with status code 1 if the input file is invalid.
     '''
-
-    # need to add the rest of the debug and log
 
     main()

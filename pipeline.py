@@ -23,6 +23,12 @@ def setup_logging(verbose=False):
     else:
         logger.setLevel(logging.DEBUG)
 
+    # Logging setup
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(levelname)-8s %(message)s",
+        datefmt="%H:%M:%S"
+    )
 
 def parse_arguments():
     """Parse command-line arguments.""" # TODO: implement
@@ -67,18 +73,12 @@ def main():
     """Main pipeline function."""
       # TODO: implement
 
-
 if __name__ == "__main__":
 
     args = parse_arguments() # Arguments to use
     setup_logging(verbose=args.verbose)
 
-    if not validate_input(args.input):
-        logger.error(f"Input file not found: {args.input}")
-        sys.exit(1)
-    else:
-        logger.info(f"Input file location = '{args.input}'")
-        logger.debug(f"Arguments parsed: input={args.input}, output={args.output}, format={args.format}")
+    logger.debug(f"Arguments parsed: input={args.input}, output={args.output}, format={args.format}")
 
 
     '''

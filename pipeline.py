@@ -48,7 +48,8 @@ def parse_arguments():
                         '-v',
                         action='store_true',
                         help='Enable verbose logging',
-                        default='False')
+                        default=False)
+
     return parser.parse_args()
 
 
@@ -64,15 +65,13 @@ def validate_input(filepath):
 
 def main():
     """Main pipeline function."""
-    pass  # TODO: implement
+      # TODO: implement
 
 
 if __name__ == "__main__":
 
     args = parse_arguments() # Arguments to use
-
-    if args.verbose: # Set DEBUG
-        logger.setLevel(logging.DEBUG)
+    setup_logging(verbose=args.verbose)
 
     if not validate_input(args.input):
         logger.error(f"Input file not found: {args.input}")

@@ -16,8 +16,6 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-parser = argparse.ArgumentParser()
-
 def setup_logging(verbose=False):
     """Configure logging for the pipeline."""
     if not verbose: # TODO: implement
@@ -47,7 +45,8 @@ def parse_arguments():
     parser.add_argument('--verbose',
                         '-v',
                         action='store_true',
-                        help='Enable verbose logging')
+                        help='Enable verbose logging',
+                        default='False')
 
 
 def validate_input(filepath):
@@ -57,7 +56,7 @@ def validate_input(filepath):
         return False
     else:
         logger.info(f'Input file exists: {filepath}')
-        return True 
+        return True
 
 
 def main():
@@ -66,4 +65,28 @@ def main():
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser() # Parser
+    args = parser.parse_args() # Arguments to use
+
+    args.input = 'sales.csv'
+    args.verbose = True
+
+    if args.verbose: # Set DEBUG
+        logger.setLevel(logging.DEBUG)
+
+    logger.debug(f"Arguments parsed: file location = '{args.input}'")
+
+    if not validate_input(args.input):
+        sys.exit(1)
+
+    '''
+    Parse the command-line arguments.
+    Set up logging using the --verbose option.
+    Log the parsed arguments at the DEBUG level.
+    Validate the input file.
+    Exit with status code 1 if the input file is invalid.
+    '''
+
+    # need to add the rest of the debug and log
+
     main()

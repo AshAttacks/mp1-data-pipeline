@@ -32,13 +32,12 @@ def load_yaml(filepath):
     with open(filepath) as f:
         data = yaml.safe_load(f)
     logger.info(f'Loaded YAML file: {filepath}')
-
     return data
 
 def load_data(filepath):
     """Load a file based on its extension."""
     path = Path(filepath)
-    suffix = Path(path).suffix
+    suffix = path.suffix.lower()
     if suffix == ".csv":
         return load_csv(path)
     elif suffix == ".json":
@@ -46,5 +45,5 @@ def load_data(filepath):
     elif suffix == ".yaml":
         return load_yaml(path)
     else:
-        logger.error(f'Unsupported file format: {Path(filepath).suffix}')
+        logger.error(f'Unsupported file format: {suffix}')
         raise ValueError(f'Unsupported file format: {suffix}')

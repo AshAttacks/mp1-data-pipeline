@@ -35,13 +35,14 @@ def load_yaml(filepath):
 
 def load_data(filepath):
     """Load a file based on its extension."""
-    suffix = Path(filepath).suffix
+    path = Path(filepath)
+    suffix = Path(path).suffix
     if suffix == ".csv":
-        return load_csv(filepath)
+        return load_csv(path)
     elif suffix == ".json":
-        return load_json(filepath)
+        return load_json(path)
     elif suffix == ".yaml":
-        return load_yaml(filepath)
+        return load_yaml(path)
     else:
         logger.error(f'Unsupported file format: {Path(filepath).suffix}')
-        pass # need to come back to this... pass?
+        raise ValueError(f'Unsupported file format: {suffix}')

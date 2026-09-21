@@ -18,14 +18,9 @@ logger = logging.getLogger(__name__)
 
 def setup_logging(verbose=False):
     """Configure logging for the pipeline."""
-    if not verbose: # TODO: implement
-        logger.setLevel(logging.INFO)
-    else:
-        logger.setLevel(logging.DEBUG)
-
     # Logging setup
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.DEBUG if verbose else logging.INFO,
         format="%(asctime)s %(levelname)-8s %(message)s",
         datefmt="%H:%M:%S"
     )
@@ -73,10 +68,7 @@ def validate_input(filepath):
 def main():
     """Main pipeline function."""
       # TODO: implement
-
-if __name__ == "__main__":
-
-    args = parse_arguments() # Arguments to use
+    args = parse_arguments()  # Arguments to use
     setup_logging(verbose=args.verbose)
 
     if not validate_input(args.input):
@@ -95,4 +87,5 @@ if __name__ == "__main__":
     Exit with status code 1 if the input file is invalid.
     '''
 
+if __name__ == "__main__":
     main()

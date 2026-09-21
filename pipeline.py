@@ -57,10 +57,9 @@ def parse_arguments():
 def validate_input(filepath):
     """Check whether the input path exists and is a file."""
     if not Path(filepath).is_file():  # TODO: implement
-        logger.error(f"Input file not found: {filepath}")
+        logger.error(f'Input file not found: {filepath}')
         return False
     else:
-        logger.debug(f"Arguments parsed: input={args.input}, output={args.output}, format={args.format}")
         logger.info(f'Input file validated: {filepath}')
         return True
 
@@ -70,6 +69,7 @@ def main():
       # TODO: implement
     args = parse_arguments()  # Arguments to use
     setup_logging(verbose=args.verbose)
+    logger.debug(f'Arguments parsed: input={args.input}, output={args.output}, format={args.format}')
 
     if not validate_input(args.input):
         sys.exit(1)

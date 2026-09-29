@@ -44,9 +44,32 @@ def remove_outliers(df, columns, method, threshold):
 
 def process_data(df, config):
     """Apply the processing steps enabled in the configuration."""
+
+    if config == True:
+        df = remove_duplicates(df)
+        df = handle_missing(df)
+        df = remove_outliers(df)
+        return df
+    else:
+        pass
+
     pass
 
 
 def create_cleaning_report(df_before, df_after):
     """Return a dictionary summarizing the cleaning results."""
-    pass
+    rows_before = len(df_before)
+    rows_after = len(df_after)
+    rows_removed = rows_before - rows_after
+    columns_before = df_before.shape[1]
+    columns_after = df_after.shape[1]
+    columns_removed = columns_before - columns_after
+
+    return {
+        'rows_before': rows_before,
+        'rows_after': rows_after,
+        'rows_removed': rows_removed,
+        'columns_before': columns_before,
+        'columns_after': columns_after,
+        'columns_removed': columns_removed,
+    }

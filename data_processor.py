@@ -38,9 +38,8 @@ def handle_missing(df, axis="rows"):
 def remove_outliers(df, columns, method, threshold):
     """Remove outliers from the specified numeric columns."""
     if method not in ('iqr', 'zscore'):
-        pass # to do
-    pass
-
+        raise ValueError(f'Method {method} not supported. Must be "iqr" or "zscore".')
+    
 
 def process_data(df, config):
     """Apply the processing steps enabled in the configuration."""

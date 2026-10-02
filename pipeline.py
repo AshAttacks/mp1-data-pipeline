@@ -75,8 +75,12 @@ def main():
     if not validate_input(args.input):
         sys.exit(1)
 
+    if not validate_input(args.config):
+        sys.exit(1)
+
     try:
         data = load_data(args.input)
+        config = load_data(args.config)
     except ValueError:
         sys.exit(1)
 

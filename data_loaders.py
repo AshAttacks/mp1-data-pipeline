@@ -44,10 +44,13 @@ def load_data(filepath):
     path = Path(filepath)
     suffix = path.suffix.lower()
     if suffix == ".csv":
+        logger.info(f'Loaded CSV file: {filepath} ({len(path)} rows)')
         return load_csv(path)
     elif suffix == ".json":
+        logger.info(f'Loaded JSON file: {filepath}')
         return load_json(path)
     elif suffix == ".yaml":
+        logger.info(f'Loaded YAML file: {filepath}')
         return load_yaml(path)
     else:
         logger.error(f'Unsupported file format: {suffix}')

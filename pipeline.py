@@ -84,6 +84,16 @@ def main():
     except ValueError:
         sys.exit(1)
 
+    try:
+        df_processed = process_data(data, config)
+    except ValueError:
+        sys.exit(1)
+
+    print(create_cleaning_report(df_processed)) # printing cleaning report
+
+    # need to log processing results
+
+    df_processed.to_csv(args.output) # output csv to output arg
     '''
     Parse the command-line arguments.
     Set up logging using the --verbose option.

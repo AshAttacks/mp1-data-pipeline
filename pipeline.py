@@ -86,6 +86,7 @@ def main():
 
     try:
         df_processed = process_data(data, config)
+        logger.info(f'Processing complete: (# ADD BEFORE ROWS HERE) → {len(df_processed)} rows')
     except ValueError:
         sys.exit(1)
 
@@ -94,6 +95,8 @@ def main():
     # need to log processing results
 
     df_processed.to_csv(args.output) # output csv to output arg
+    logger.info(f'Saved cleaned data to {args.output}')
+
     '''
     Parse the command-line arguments.
     Set up logging using the --verbose option.

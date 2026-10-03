@@ -37,23 +37,32 @@ def handle_missing(df, axis="rows"):
 
 def remove_outliers(df, columns, method, threshold):
     """Remove outliers from the specified numeric columns."""
-    if method not in ('iqr', 'zscore'):
+
+    if method == 'iqr':
+        q1 = df[columns].quantile(.25)
+        q3 = df[columns].quantile(.75)
+        iqr = q3 - q1
+        lower_bound = q1 - threshold * iqr
+        upper_bound = q3 + threshold * iqr
+
+        return df[(df[columns] >= lower_bound) & (df[columns] <= upper_bound)]
+
+    elif method == 'zscore':
+        z_score = abs(df[columns] - df[columns].mean()) / df[columns].std()
+        return df[z_score <= threshold].all(axis=1)
+
+    else:
         raise ValueError(f'Method {method} not supported. Must be "iqr" or "zscore".')
-    
+
 
 def process_data(df, config):
     """Apply the processing steps enabled in the configuration."""
 
-    if config == True:
+    if config['processing']:
         df = remove_duplicates(df)
         df = handle_missing(df)
-        df = remove_outliers(df)
+        df = remove_outliers(df, config['columns'], config['method'], config['threshold'])
         return df
-    else:
-        pass
-
-    pass
-
 
 def create_cleaning_report(df_before, df_after):
     """Return a dictionary summarizing the cleaning results."""

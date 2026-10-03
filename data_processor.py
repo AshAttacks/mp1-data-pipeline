@@ -38,6 +38,21 @@ def handle_missing(df, axis="rows"):
 def remove_outliers(df, columns, method, threshold):
     """Remove outliers from the specified numeric columns."""
 
+    valid_columns = []
+
+    for col in columns:
+        if col not in df.columns:
+            logger.warning(f'Column {col} is not in the dataframe: skipping.')
+            continue
+        if not pd.api.types.is_numeric_dtype(df[col]):
+            logger.warning(f'Column {col} is not numeric. Skipping.')
+            continue
+        valid_columns.append(col)
+
+    if not valid_columns:
+        logger.warning('No valid columns to check. Returning data unchanged.')
+        return df
+
     if method == 'iqr':
         q1 = df[columns].quantile(.25)
         q3 = df[columns].quantile(.75)
@@ -52,6 +67,7 @@ def remove_outliers(df, columns, method, threshold):
         return df[z_score <= threshold].all(axis=1)
 
     else:
+        logger.error(f'Method {method} is not supported.')
         raise ValueError(f'Method {method} not supported. Must be "iqr" or "zscore".')
 
 

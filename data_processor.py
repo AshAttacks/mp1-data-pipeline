@@ -1,6 +1,7 @@
 # data_processor.py
 import logging
 import pandas as pd
+from numpy.ma.core import flatten_structured_array
 
 logger = logging.getLogger(__name__)
 
@@ -11,18 +12,19 @@ def remove_duplicates(df):
     rows_left = len(df) # rows after removed dups
     rows_removed = rows - rows_left # number rows removed
     logger.debug(f'Removed {rows_removed} row(s) from dataframe.')
-    return df, rows_removed
+    return df
 
 
 def handle_missing(df, axis="rows"):
     """Drop rows or columns containing missing values."""
     if axis == "rows":
         before = len(df)
-        df.dropna()
+        df = df.dropna()
         after = len(df)
         removed = before - after
         logger.debug(f'Removed {removed} row(s) from dataframe.')
-        return df, removed
+        return df
+
     elif axis == "columns":
         before = df.shape[1]
         df.dropna(axis=1)
@@ -30,6 +32,7 @@ def handle_missing(df, axis="rows"):
         removed = before - after
         logger.debug(f'Removed {removed} column(s) from dataframe.')
         return df, removed
+
     else:
         logger.error(f'Axis {axis} is not supported.')
         raise ValueError('Axis must be either "rows" or "columns"')
@@ -38,7 +41,9 @@ def handle_missing(df, axis="rows"):
 def remove_outliers(df, columns, method, threshold):
     """Remove outliers from the specified numeric columns."""
 
-    valid_columns = []
+    if method not in ['iqr', 'zscore']:
+        logger.error(f'Method {method} is not supported.')
+        raise ValueError(f'Method {method} not supported. Must be "iqr" or "zscore".')
 
     for col in columns:
         if col not in df.columns:
@@ -47,11 +52,8 @@ def remove_outliers(df, columns, method, threshold):
         if not pd.api.types.is_numeric_dtype(df[col]):
             logger.warning(f'Column {col} is not numeric. Skipping.')
             continue
-        valid_columns.append(col)
 
-    if not valid_columns:
-        logger.warning('No valid columns to check. Returning data unchanged.')
-        return df
+    before = len(df)
 
     if method == 'iqr':
         q1 = df[columns].quantile(.25)
@@ -60,25 +62,39 @@ def remove_outliers(df, columns, method, threshold):
         lower_bound = q1 - threshold * iqr
         upper_bound = q3 + threshold * iqr
 
-        return df[(df[columns] >= lower_bound) & (df[columns] <= upper_bound)]
+        new_df = df[(df[columns] >= lower_bound) & (df[columns] <= upper_bound)]
 
-    elif method == 'zscore':
-        z_score = abs(df[columns] - df[columns].mean()) / df[columns].std()
-        return df[z_score <= threshold].all(axis=1)
+        logger.debug(f'Method {method} initiated with threshold {threshold}. '
+                     f'{before - len(new_df)} row(s) removed.')
+
+        return new_df
 
     else:
-        logger.error(f'Method {method} is not supported.')
-        raise ValueError(f'Method {method} not supported. Must be "iqr" or "zscore".')
+        z_score = abs(df[columns] - df[columns].mean()) / df[columns].std()
+        new_df = df[z_score <= threshold].all(axis=1)
+
+        logger.debug(f'Method {method} initiated with threshold {threshold}. '
+                     f'{before - len(new_df)} row(s) removed.')
+        return  new_df
+
 
 
 def process_data(df, config):
     """Apply the processing steps enabled in the configuration."""
+    step = config['processing']
 
-    if config['processing']:
+    if step.get('remove_duplicates'):
         df = remove_duplicates(df)
-        df = handle_missing(df)
-        df = remove_outliers(df, config['columns'], config['method'], config['threshold'])
-        return df
+
+    missing = step.get('missing')
+    if missing.get('enabled'):
+        df = handle_missing(df, missing.get('axis', 'rows'))
+
+    outliers = step.get('outliers')
+    if outliers.get('enabled'):
+         df = remove_outliers(df, outliers['columns'],
+                             outliers['method'], outliers['threshold'])
+    return df
 
 def create_cleaning_report(df_before, df_after):
     """Return a dictionary summarizing the cleaning results."""

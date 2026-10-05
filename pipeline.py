@@ -36,7 +36,7 @@ def parse_arguments():
                         required=True,
                         help='Path to the input file')
 
-    parser.add_argument('--config,' # add required .yaml
+    parser.add_argument('--config', # add required .yaml
                         '-c',
                         required=True,
                         help='Path to the configuration file')
@@ -70,7 +70,7 @@ def main():
       # TODO: implement
     args = parse_arguments()  # Arguments to use
     setup_logging(verbose=args.verbose)
-    logger.debug(f'Arguments parsed: input={args.input}, output={args.output}, format={args.format}')
+    logger.debug(f'Arguments parsed: input={args.input}, config={args.config}, output={args.output}')
 
     if not validate_input(args.input):
         sys.exit(1)
@@ -84,17 +84,20 @@ def main():
     except ValueError:
         sys.exit(1)
 
+    df_original = data.copy()
+
     try:
         df_processed = process_data(data, config)
-        logger.info(f'Processing complete: (# ADD BEFORE ROWS HERE) → {len(df_processed)} rows')
+        logger.info(f'Processing complete: {len(df_original)} → {len(df_processed)} rows')
     except ValueError:
         sys.exit(1)
 
-    print(create_cleaning_report(df_processed)) # printing cleaning report
+    report = create_cleaning_report(df_processed)
+    print(report) # printing cleaning report
 
     # need to log processing results
 
-    df_processed.to_csv(args.output) # output csv to output arg
+    df_processed.to_csv(args.output, index=False) # output csv to output arg
     logger.info(f'Saved cleaned data to {args.output}')
 
     '''

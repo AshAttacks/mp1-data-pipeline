@@ -65,14 +65,14 @@ def remove_outliers(df, columns, method, threshold):
 
             logger.debug(f'Method {method} initiated with threshold {threshold}. '
                          f'| Upper {upper_bound} | Lower {lower_bound} | '
-                         f'{before - len(new_df)} row(s) removed.')
+                         f'{before - len(df)} row(s) removed.')
 
         else:
-            z_score = abs(df[columns] - df[columns].mean()) / df[columns].std()
+            z_score = abs(df[col] - df[col].mean()) / df[col].std()
             df = df[z_score <= threshold]
 
             logger.debug(f'Method {method} initiated with threshold {threshold}. '
-                         f'{before - len(new_df)} row(s) removed.')
+                         f'{before - len(df)} row(s) removed.')
     return df
 
 

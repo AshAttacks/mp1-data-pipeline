@@ -92,7 +92,7 @@ def main():
     except ValueError:
         sys.exit(1)
 
-    report = create_cleaning_report(df_processed)
+    report = create_cleaning_report(df_original, df_processed)
     print(report) # printing cleaning report
 
     # need to log processing results

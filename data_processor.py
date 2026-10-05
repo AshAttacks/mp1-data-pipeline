@@ -1,7 +1,6 @@
 # data_processor.py
 import logging
 import pandas as pd
-from numpy.ma.core import flatten_structured_array
 
 logger = logging.getLogger(__name__)
 
@@ -11,7 +10,7 @@ def remove_duplicates(df):
     df = df.drop_duplicates() # removed dups
     rows_left = len(df) # rows after removed dups
     rows_removed = rows - rows_left # number rows removed
-    logger.debug(f'Removed {rows_removed} row(s) from dataframe.')
+    logger.debug(f'Remove Duplicates: Removed {rows_removed} row(s) from dataframe.')
     return df
 
 
@@ -22,12 +21,12 @@ def handle_missing(df, axis="rows"):
         df = df.dropna()
         after = len(df)
         removed = before - after
-        logger.debug(f'Removed {removed} row(s) from dataframe.')
+        logger.debug(f'Remove Missing: Removed {removed} row(s) from dataframe.')
         return df
 
     elif axis == "columns":
         before = df.shape[1]
-        df.dropna(axis=1)
+        df = df.dropna(axis=1)
         after = df.shape[1]
         removed = before - after
         logger.debug(f'Removed {removed} column(s) from dataframe.')
@@ -53,30 +52,30 @@ def remove_outliers(df, columns, method, threshold):
             logger.warning(f'Column {col} is not numeric. Skipping.')
             continue
 
-    before = len(df)
+        before = len(df)
 
-    if method == 'iqr':
-        q1 = df[columns].quantile(.25)
-        q3 = df[columns].quantile(.75)
-        iqr = q3 - q1
-        lower_bound = q1 - threshold * iqr
-        upper_bound = q3 + threshold * iqr
+        if method == 'iqr':
+            q1 = df[columns].quantile(.25)
+            q3 = df[columns].quantile(.75)
+            iqr = q3 - q1
+            lower_bound = q1 - threshold * iqr
+            upper_bound = q3 + threshold * iqr
 
-        new_df = df[(df[columns] >= lower_bound) & (df[columns] <= upper_bound)]
+            new_df = df[(df[columns] >= lower_bound) & (df[columns] <= upper_bound)]
 
-        logger.debug(f'Method {method} initiated with threshold {threshold}. '
-                     f'| Upper {upper_bound} | Lower {lower_bound} | '
-                     f'{before - len(new_df)} row(s) removed.')
+            logger.debug(f'Method {method} initiated with threshold {threshold}. '
+                         f'| Upper {upper_bound} | Lower {lower_bound} | '
+                         f'{before - len(new_df)} row(s) removed.')
 
-        return new_df
+            return new_df
 
-    else:
-        z_score = abs(df[columns] - df[columns].mean()) / df[columns].std()
-        new_df = df[z_score <= threshold].all(axis=1)
+        else:
+            z_score = abs(df[columns] - df[columns].mean()) / df[columns].std()
+            new_df = df[z_score <= threshold].all(axis=1)
 
-        logger.debug(f'Method {method} initiated with threshold {threshold}. '
-                     f'{before - len(new_df)} row(s) removed.')
-        return  new_df
+            logger.debug(f'Method {method} initiated with threshold {threshold}. '
+                         f'{before - len(new_df)} row(s) removed.')
+            return  new_df
 
 
 

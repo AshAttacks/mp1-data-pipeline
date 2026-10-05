@@ -30,7 +30,7 @@ def handle_missing(df, axis="rows"):
         after = df.shape[1]
         removed = before - after
         logger.debug(f'Removed {removed} column(s) from dataframe.')
-        return df, removed
+        return df
 
     else:
         logger.error(f'Axis {axis} is not supported.')
@@ -55,27 +55,25 @@ def remove_outliers(df, columns, method, threshold):
         before = len(df)
 
         if method == 'iqr':
-            q1 = df[columns].quantile(.25)
-            q3 = df[columns].quantile(.75)
+            q1 = df[col].quantile(.25)
+            q3 = df[col].quantile(.75)
             iqr = q3 - q1
             lower_bound = q1 - threshold * iqr
             upper_bound = q3 + threshold * iqr
 
-            new_df = df[(df[columns] >= lower_bound) & (df[columns] <= upper_bound)]
+            df = df[(df[col] >= lower_bound) & (df[col] <= upper_bound)]
 
             logger.debug(f'Method {method} initiated with threshold {threshold}. '
                          f'| Upper {upper_bound} | Lower {lower_bound} | '
                          f'{before - len(new_df)} row(s) removed.')
 
-            return new_df
-
         else:
             z_score = abs(df[columns] - df[columns].mean()) / df[columns].std()
-            new_df = df[z_score <= threshold].all(axis=1)
+            df = df[z_score <= threshold]
 
             logger.debug(f'Method {method} initiated with threshold {threshold}. '
                          f'{before - len(new_df)} row(s) removed.')
-            return  new_df
+    return df
 
 
 

@@ -65,6 +65,7 @@ def remove_outliers(df, columns, method, threshold):
         new_df = df[(df[columns] >= lower_bound) & (df[columns] <= upper_bound)]
 
         logger.debug(f'Method {method} initiated with threshold {threshold}. '
+                     f'| Upper {upper_bound} | Lower {lower_bound} | '
                      f'{before - len(new_df)} row(s) removed.')
 
         return new_df

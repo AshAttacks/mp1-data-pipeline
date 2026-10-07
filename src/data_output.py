@@ -1,5 +1,6 @@
 # src/data_output.py
 import logging
+from operator import truediv
 from pathlib import Path
 
 
@@ -8,13 +9,11 @@ logger = logging.getLogger(__name__)
 
 def save_data(df, filepath):
     """Save a DataFrame as a CSV file."""
-    Path(filepath).parent.mkdir(parents=True, exist_ok=True)
-    df.to_csv(filepath, index=False)
-    return
+    output_path = Path(filepath)
 
-    # Use pathlib to work with the output path.
-    # Create the output directory if it does not exist.
-    # Hint: Path(filepath).parent.mkdir(parents=True, exist_ok=True)
-    # Save the DataFrame as CSV without the index.
-    # Log the number of rows saved and the output path at the DEBUG level.
-    # Return the output path.
+    if not output_path.exists():
+        output_path.parent.mkdir(parents=True, exist_ok=True) # create folder
+
+    df.to_csv(filepath, index=False)
+    logger.debug(f'Saved DF as CSV with {len(df)} rows at {filepath}')
+    return filepath

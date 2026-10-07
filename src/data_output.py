@@ -11,3 +11,10 @@ def save_data(df, filepath):
     Path(filepath).parent.mkdir(parents=True, exist_ok=True)
     df.to_csv(filepath, index=False)
     return
+
+    # Use pathlib to work with the output path.
+    # Create the output directory if it does not exist.
+    # Hint: Path(filepath).parent.mkdir(parents=True, exist_ok=True)
+    # Save the DataFrame as CSV without the index.
+    # Log the number of rows saved and the output path at the DEBUG level.
+    # Return the output path.

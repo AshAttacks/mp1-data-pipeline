@@ -8,13 +8,20 @@ Usage:
     python pipeline.py --input data.csv --output results.json --format json --verbose
 """
 
+from src import (
+    create_cleaning_report,
+    load_data,
+    process_data,
+    save_data,
+    setup_logging,
+    validate_dataframe,
+    validate_input,
+)
+
 import argparse
 import logging
 import sys
 from pathlib import Path
-from src.data_loaders import load_data
-from src.data_processor import process_data, create_cleaning_report
-from src.utils import validate_input, setup_logging
 
 logger = logging.getLogger(__name__)
 
@@ -81,13 +88,8 @@ def main():
     df_processed.to_csv(args.output, index=False) # output csv to output arg
     logger.info(f'Saved cleaned data to {args.output}')
 
-    '''
-    Parse the command-line arguments.
-    Set up logging using the --verbose option.
-    Log the parsed arguments at the DEBUG level.
-    Validate the input file.
-    Exit with status code 1 if the input file is invalid.
-    '''
+    # Update pipeline.py
+
 
 if __name__ == "__main__":
     main()

@@ -30,4 +30,7 @@ def validate_dataframe(df, required_columns, numeric_columns):
         # convert to a numeric data type
         df[col] = pd.to_numeric(df[col])
 
+        # need to add in a WARNING and remove rows containing those invalid numeric values.
+        # After removing invalid values, convert each configured numeric column to a numeric data type.
+
     pass

@@ -74,22 +74,32 @@ def main():
 
     df_original = data.copy()
 
+    # Reading in validation config
+
+    required_columns = config['Validation']['required_columns']
+    numeric_columns = config['Validation']['numeric_columns']
+
     try:
-        df_processed = process_data(data, config)
+        df_validated = validate_dataframe(data, required_columns, numeric_columns)
+    except ValueError:
+        sys.exit(1)
+
+    # log validated rows before & after
+    logger.info(f'Validated dataframe rows: {df_original.shape[0]} | Rows before: {len(df_original)}')
+
+    try:
+        df_processed = process_data(df_validated, config)
         logger.info(f'Processing complete: {len(df_original)} → {len(df_processed)} rows')
     except ValueError:
         sys.exit(1)
 
-    report = create_cleaning_report(df_original, df_processed)
-    print(report) # printing cleaning report
-
     # need to log processing results
 
-    df_processed.to_csv(args.output, index=False) # output csv to output arg
+    save_data(df_processed, args.output) # output csv to output arg
     logger.info(f'Saved cleaned data to {args.output}')
 
-    # Update pipeline.py
-
+    report = create_cleaning_report(df_original, df_processed)
+    print(report)  # printing cleaning report
 
 if __name__ == "__main__":
     main()

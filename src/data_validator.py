@@ -12,7 +12,10 @@ def validate_dataframe(df, required_columns, numeric_columns):
     required_columns: a list of column names that must exist.
     numeric_columns: a list of column names whose values should be numeric.
     """
-
+    for col in required_columns:
+        if col not in df.columns:
+            logger.error(f'Column {col} not in dataframe')
+            raise ValueError(f"Required column {col} does not exist")
     for col in numeric_columns:
         invalid_rows = []
         for i, value in df[col].items():
@@ -30,4 +33,5 @@ def validate_dataframe(df, required_columns, numeric_columns):
         df.drop(invalid_rows, axis=1, inplace=True)
         # convert to a numeric data type
         df[col] = pd.to_numeric(df[col])
+    logger.debug(f'Valid columns: {len(df.columns)} | Removed Columns: {len(invalid_rows)}')
     return df

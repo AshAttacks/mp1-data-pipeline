@@ -16,3 +16,4 @@ venv/
 
 # Files
 *.csv
+output/

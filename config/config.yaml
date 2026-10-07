@@ -12,5 +12,8 @@ processing:
     method: "iqr"
     threshold: 1.5
 
+validation:
+  required_columns: ['Student_ID','Score']
+  numeric_columns: ['Student_ID','Score']
 
   # Update config/config.yaml

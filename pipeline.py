@@ -12,19 +12,11 @@ import argparse
 import logging
 import sys
 from pathlib import Path
-from data_loaders import load_data
-from data_processor import process_data, create_cleaning_report
+from src.data_loaders import load_data
+from src.data_processor import process_data, create_cleaning_report
+from src.utils import validate_input, setup_logging
 
 logger = logging.getLogger(__name__)
-
-def setup_logging(verbose=False):
-    """Configure logging for the pipeline."""
-    # Logging setup
-    logging.basicConfig(
-        level=logging.DEBUG if verbose else logging.INFO,
-        format="%(asctime)s %(levelname)-8s %(name)s — %(message)s",
-        datefmt="%H:%M:%S"
-    )
 
 def parse_arguments():
     """Parse command-line arguments.""" # TODO: implement
@@ -53,17 +45,6 @@ def parse_arguments():
                         default=False)
 
     return parser.parse_args()
-
-
-def validate_input(filepath):
-    """Check whether the input path exists and is a file."""
-    if not Path(filepath).is_file():  # TODO: implement
-        logger.error(f'Input file not found: {filepath}')
-        return False
-    else:
-        logger.info(f'Input file validated: {filepath}')
-        return True
-
 
 def main():
     """Main pipeline function."""

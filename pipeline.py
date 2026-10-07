@@ -76,8 +76,8 @@ def main():
 
     # Reading in validation config
 
-    required_columns = config['Validation']['required_columns']
-    numeric_columns = config['Validation']['numeric_columns']
+    required_columns = config['validation']['required_columns']
+    numeric_columns = config['validation']['numeric_columns']
 
     try:
         df_validated = validate_dataframe(data, required_columns, numeric_columns)

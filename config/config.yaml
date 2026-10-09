@@ -8,7 +8,7 @@ processing:
   outliers:
     enabled: true
     columns:
-      - Score
+      - rating
     method: "iqr"
     threshold: 1.5
 

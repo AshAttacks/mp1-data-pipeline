@@ -1,6 +1,5 @@
 # src/data_output.py
 import logging
-from operator import truediv
 from pathlib import Path
 
 

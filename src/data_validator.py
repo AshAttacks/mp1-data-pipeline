@@ -31,10 +31,10 @@ def validate_dataframe(df, required_columns, numeric_columns):
 
         # TODO: Remove the invalid rows.
         logger.warning(f'Rows {invalid_rows} are invalid: removing them')
-        df.drop(invalid_rows, axis=0, inplace=True)
+        df.drop(invalid_rows)
 
         # convert to a numeric data type
         df[col] = pd.to_numeric(df[col])
-    logger.debug(f'Valid columns: {len(df.columns)} | Removed Columns: {len(invalid_rows)}')
+    logger.debug(f'Valid rows: {len(df.shape[0])} | Removed Rows: {len(invalid_rows)}')
 
     return df

@@ -81,11 +81,11 @@ def main():
         sys.exit(1)
 
     # log validated rows before & after
-    logger.info(f'Validated dataframe rows: {df_validated.shape[0]} | Rows before: {len(df_original)}')
+    logger.info(f'Validated dataframe rows: {len(df_validated)} | Rows before: {len(df_original)}')
 
     try:
         df_processed = process_data(df_validated, config)
-        logger.info(f'Processing complete: {len(df_original)} → {len(df_processed)} rows')
+        logger.info(f'Processing complete: {len(df_validated)} → {len(df_processed)} rows')
     except ValueError:
         sys.exit(1)
 
@@ -94,7 +94,7 @@ def main():
     save_data(df_processed, args.output) # output csv to output arg
     logger.info(f'Saved cleaned data to {args.output}')
 
-    report = create_cleaning_report(df_original, df_processed)
+    report = create_cleaning_report(df_validated, df_processed)
     print(report)  # printing cleaning report
 
 if __name__ == "__main__":

@@ -77,15 +77,16 @@ def main():
     required_columns = config['validation']['required_columns']
     numeric_columns = config['validation']['numeric_columns']
 
+    # Original DF
+    df_original = data.copy()
+
     try:
         df_validated = validate_dataframe(data, required_columns, numeric_columns)
     except ValueError:
         sys.exit(1)
 
-    df_original = data.copy()
-
     # log validated rows before & after
-    logger.info(f'Validated dataframe rows: {df_original.shape[0]} | Rows before: {len(df_original)}')
+    logger.info(f'Validated dataframe rows: {df_validated.shape[0]} | Rows before: {len(df_original)}')
 
     try:
         df_processed = process_data(df_validated, config)

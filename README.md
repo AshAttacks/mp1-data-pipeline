@@ -4,7 +4,7 @@ The `pipeline.py` file is the end-to-end general organizer and processor that im
 establishes the order of runs based on the command prompt commands. This program allows the user to input data and process 
 based on their own configuration rules all in one. Outputted data files have a wide range of processing 
 from removing duplicates, outliers, and more. Data is loaded, validated, cleaned according to the rules in 
-`config/config.yaml`, and saved to output/. The modules live in `src/`, and `pipeline.py` coordinates them.
+`config/config.yaml`, and saved to `output/`. The modules live in `src/`, and `pipeline.py` coordinates them.
 
 Limited action is required from the user as the pipeline utilizes modules that will identify file types, 
 and import according to those types.

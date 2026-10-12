@@ -21,7 +21,7 @@ import sys
 logger = logging.getLogger(__name__)
 
 def parse_arguments():
-    """Parse command-line arguments.""" # TODO: implement
+    """Parse command-line arguments."""
 
     parser = argparse.ArgumentParser(description='Data Processing Pipeline')  # Parser
 
@@ -30,7 +30,7 @@ def parse_arguments():
                         required=True,
                         help='Path to the input file')
 
-    parser.add_argument('--config', # add required .yaml
+    parser.add_argument('--config',
                         '-c',
                         required=True,
                         help='Path to the configuration file')
@@ -50,7 +50,6 @@ def parse_arguments():
 
 def main():
     """Main pipeline function."""
-      # TODO: implement
     args = parse_arguments()  # Arguments to use
     setup_logging(verbose=args.verbose)
     logger.debug(f'Arguments parsed: input={args.input}, config={args.config}, output={args.output}')
@@ -88,8 +87,6 @@ def main():
         logger.info(f'Processing complete: {len(df_validated)} → {len(df_processed)} rows')
     except ValueError:
         sys.exit(1)
-
-    # need to log processing results
 
     save_data(df_processed, args.output) # output csv to output arg
     logger.info(f'Saved cleaned data to {args.output}')

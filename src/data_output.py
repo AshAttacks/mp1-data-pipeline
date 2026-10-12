@@ -10,8 +10,7 @@ def save_data(df, filepath):
     """Save a DataFrame as a CSV file."""
     output_path = Path(filepath)
 
-    if not output_path.exists():
-        output_path.parent.mkdir(parents=True, exist_ok=True) # create folder
+    output_path.parent.mkdir(parents=True, exist_ok=True) # create folder, checks if exists
 
     df.to_csv(filepath, index=False)
     logger.debug(f'Saved DF as CSV with {len(df)} rows at {filepath}')

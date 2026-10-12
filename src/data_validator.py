@@ -27,14 +27,14 @@ def validate_dataframe(df, required_columns, numeric_columns):
                 try:
                     float(value)
                 except ValueError:
-                    # TODO: Log a warning and record this row's index.
+                    # Log a warning and record this row's index.
                     logger.warning(f"Row {i} contains invalid value: {value}")
                     invalid_rows.append(i)
-                    pass
 
-        # TODO: Remove the invalid rows.
-        logger.warning(f'Rows {invalid_rows} are invalid: removing them')
-        df = df.drop(invalid_rows)
+        # Remove the invalid rows.
+        if invalid_rows:
+            logger.warning(f'Rows {invalid_rows} are invalid: removing them')
+            df = df.drop(invalid_rows)
 
         # convert to a numeric data type
         df[col] = pd.to_numeric(df[col])

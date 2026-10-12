@@ -4,7 +4,7 @@ The `pipeline.py` file is the end-to-end general organizer and processor that im
 establishes the order of runs based on the command prompt commands. This program allows the user to input data and process 
 based on their own configuration rules all in one. Outputted data files have a wide range of processing 
 from removing duplicates, outliers, and more. Data is loaded, validated, cleaned according to the rules in 
-config/config.yaml, and saved to output/. The modules live in src/, and pipeline.py coordinates them.
+`config/config.yaml`, and saved to output/. The modules live in `src/`, and `pipeline.py` coordinates them.
 
 Limited action is required from the user as the pipeline utilizes modules that will identify file types, 
 and import according to those types.
@@ -14,7 +14,7 @@ Below are high level steps on the actions taken by this pipeline.
 ## Data Movement:
 
 1. Establishes parser arguments into a variable 
-2. Validates and loads inputs and configs provided the user 
+2. Validates and loads inputs and configs provided by the user 
 3. Validates & processes the data being imported 
 4. Saves processed data & exports as a CSV
 5. Prints cleaning report
@@ -47,19 +47,19 @@ mp1-data-pipeline/
 
 ## Module Responsibilities:
 
-- ```__init__.py```
+- `__init__.py`
   - Re-exports modules for conciseness in pipeline.py
-- ```data_loaders.py```
+- `data_loaders.py`
   - Loads data from multiple datatypes
-- ```data_output.py```
+- `data_output.py`
   - Saves and outputs csv after processing
-- ```data_processor.py```
+- `data_processor.py`
   - Removes duplicates, handles missing values and removes outliers
-- ```data_validator.py```
+- `data_validator.py`
   - Validates data by confirming required columns are present and 
   columns being processed are numeric. If rows include non-numeric values
   they are removed.
-- ```utils.py```
+- `utils.py`
   - Configures logging formats and validates inputs filepaths
 
 ## Example Command:

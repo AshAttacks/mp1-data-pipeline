@@ -24,7 +24,6 @@ Below are high level steps on the actions taken by this pipeline.
 
 ```text
 mp1-data-pipeline/
-├── pipeline.py
 ├── requirements.txt
 ├── config/
 │   └── config.yaml
@@ -43,8 +42,7 @@ mp1-data-pipeline/
 │   └── sample_data.csv
 ├── .gitignore
 ├── pipeline.py
-├── README.md
-└── output/
+└── README.md
 ```
 
 ## Module Responsibilities:

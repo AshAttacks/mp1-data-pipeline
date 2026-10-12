@@ -3,15 +3,15 @@ processing:
 
   missing:
     enabled: true
-    axis: "rows"
+    axis: "rows" # if columns... "columns"
 
   outliers:
     enabled: true
     columns:
-      - rating
-    method: "iqr"
+      - rating # column for outliers
+    method: "iqr" # if z-score... "zscore"
     threshold: 1.5
 
 validation:
-  required_columns: ['record_id','name','rating','category','status']
-  numeric_columns: ['record_id','rating']
+  required_columns: ['record_id','name','rating','category','status'] # columns required
+  numeric_columns: ['record_id','rating'] # columns with numeric values

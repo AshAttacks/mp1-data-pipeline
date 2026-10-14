@@ -1,12 +1,12 @@
 processing:
-  remove_duplicates: true
+  remove_duplicates: true # removes duplicates
 
-  missing:
+  missing: # removes missing values
     enabled: true
     axis: "rows" # if columns... "columns"
 
   outliers:
-    enabled: true
+    enabled: true # outlier removal
     columns:
       - rating # column for outliers
     method: "iqr" # if z-score... "zscore"
